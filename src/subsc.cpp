@@ -1,12 +1,12 @@
 #include "ros/ros.h"
-#include "std_msgs/String.h"
+#include <image_transport/image_transport.h>
 
 /**
  * This tutorial demonstrates simple receipt of messages over the ROS system.
  */
-void chatterCallback(const std_msgs::String::ConstPtr& msg)
+void imageCallback(const sensor_msgs::ImageConstPtr& msg)
 {
-  ROS_INFO("I heard: [%s]", msg->data.c_str());
+  ROS_INFO("I heard: [%s]", "geroi");
 }
 
 int main(int argc, char **argv)
@@ -29,7 +29,7 @@ int main(int argc, char **argv)
    * NodeHandle destructed will close down the node.
    */
   ros::NodeHandle n;
-
+  image_transport::ImageTransport it(n);
   /**
    * The subscribe() call is how you tell ROS that you want to receive messages
    * on a given topic.  This invokes a call to the ROS
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
    * is the number of messages that will be buffered up before beginning to throw
    * away the oldest ones.
    */
-  ros::Subscriber sub = n.subscribe("chatter", 1000, chatterCallback);
+  image_transport::Subscriber sub = it.subscribe("in_image_base_topic", 1, imageCallback);
 
   /**
    * ros::spin() will enter a loop, pumping callbacks.  With this version, all
